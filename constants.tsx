@@ -23,7 +23,7 @@ export const ICONS = {
 export const DEFAULT_AGENCY = {
   name: 'KUREVII STUDIO PVT LTD',
   email: 'hello@kurevi.com',
-  address: 'VINARES V01 A 11 03\nVinares Tower 1 A, 2300\nK. Hulhumale\', Maldives',
+  address: 'Vinares Tower 1 A, 2300\nK. Hulhumale\', Maldives',
   website: 'www.kurevi.com',
   phone: '+960 777-0000',
   registration: 'C13882025 / 2025PV01246E'

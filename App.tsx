@@ -19,9 +19,9 @@ const App: React.FC = () => {
     date: new Date().toISOString().split('T')[0],
     dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
     client: {
-      name: 'Visionary Partner Ltd',
-      email: 'hello@client.com',
-      address: 'Male\', Maldives',
+      name: 'MALDIVES TUNA HOT SAUCE COMPANY. PT LTD.',
+      email: 'xaan605@gmail.com, abdullaluthufi@gmail.com',
+      address: 'HITHADOO S EVERGREEN\nADDOO CITY: 19029\nMALDIVES\n+9607848504, +66 943718504',
       taxId: ''
     },
     agency: DEFAULT_AGENCY,
@@ -186,11 +186,17 @@ const App: React.FC = () => {
                 className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm" 
               />
               <textarea 
-                placeholder="Full Address"
+                placeholder="Full Address, Phones"
                 value={docData.client.address}
-                rows={2}
+                rows={6}
                 onChange={(e) => setDocData(prev => ({ ...prev, client: { ...prev.client, address: e.target.value } }))}
                 className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm resize-none" 
+              />
+              <input 
+                placeholder="Client Emails"
+                value={docData.client.email}
+                onChange={(e) => setDocData(prev => ({ ...prev, client: { ...prev.client, email: e.target.value } }))}
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm" 
               />
             </div>
           </div>
