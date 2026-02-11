@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { DocumentData } from '../types';
+import { DocumentData } from '../types.ts';
 
 interface DocumentPreviewProps {
   data: DocumentData;

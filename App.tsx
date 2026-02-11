@@ -4,13 +4,13 @@ import {
   DocumentData, 
   DocumentType, 
   LineItem 
-} from './types';
+} from './types.ts';
 import { 
   ICONS, 
   DEFAULT_AGENCY 
-} from './constants';
-import DocumentPreview from './components/DocumentPreview';
-import { optimizeDescription } from './services/geminiService';
+} from './constants.tsx';
+import DocumentPreview from './components/DocumentPreview.tsx';
+import { optimizeDescription } from './services/geminiService.ts';
 
 const App: React.FC = () => {
   const [docData, setDocData] = useState<DocumentData>({
