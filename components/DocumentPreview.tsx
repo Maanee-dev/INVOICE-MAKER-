@@ -8,7 +8,11 @@ interface DocumentPreviewProps {
 }
 
 const Page: React.FC<{ children: React.ReactNode; pageNumber: number; totalPages: number }> = ({ children, pageNumber, totalPages }) => (
-  <div className="document-page relative bg-white w-full max-w-[800px] mx-auto shadow-2xl min-h-[1120px] flex flex-col p-16 text-slate-800 border border-slate-100 mb-10 last:mb-0 overflow-hidden" style={{ height: '1120px' }}>
+  <div 
+    className="document-page relative bg-white w-full max-w-[800px] mx-auto shadow-2xl min-h-[1122px] flex flex-col p-16 text-slate-800 border border-slate-100 mb-10 last:mb-0 overflow-hidden" 
+    style={{ height: '1122px', width: '794px' }}
+    data-pdf-page={pageNumber}
+  >
     {children}
     <div className="absolute bottom-8 left-0 right-0 text-center no-print">
       <span className="text-[9px] text-slate-300 uppercase tracking-[0.3em] font-bold">Page {pageNumber} of {totalPages}</span>
@@ -20,29 +24,25 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
   const subtotal = data.items.reduce((acc, item) => acc + item.amount, 0);
   const total = subtotal + ((subtotal * data.taxRate) / 100) - data.discount;
 
-  // Split items into chunks for multi-page support
-  // Page 1 gets fewer items due to large header/client info
   const itemsPerPageFirst = 2;
   const itemsPerPageSubsequent = 3;
   
   const pages: LineItem[][] = [];
   let currentItemIndex = 0;
 
-  // Page 1
   pages.push(data.items.slice(0, itemsPerPageFirst));
   currentItemIndex = itemsPerPageFirst;
 
-  // Remaining pages
   while (currentItemIndex < data.items.length) {
     pages.push(data.items.slice(currentItemIndex, currentItemIndex + itemsPerPageSubsequent));
     currentItemIndex += itemsPerPageSubsequent;
   }
 
-  const totalPagesCount = pages.length + 1; // +1 for the Summary/Terms page
+  const totalPagesCount = pages.length + 1;
 
   return (
-    <div className="preview-container w-full py-10">
-      {/* Page 1: Brand & Initial Items */}
+    <div id="pdf-container" className="preview-container w-full py-10">
+      {/* Page 1 */}
       <Page pageNumber={1} totalPages={totalPagesCount}>
         <div className="flex justify-between items-start mb-16">
           <div>
@@ -87,7 +87,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {pages[0].map((item) => (
+              {pages[0] && pages[0].map((item) => (
                 <tr key={item.id}>
                   <td className="py-6 pr-8 align-top">
                     <div className="text-[13px] font-bold text-slate-900 mb-1.5 uppercase tracking-tight">{item.title}</div>
@@ -102,7 +102,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
         </div>
       </Page>
 
-      {/* Subsequent Item Pages */}
+      {/* Continuation Pages */}
       {pages.slice(1).map((chunk, pageIdx) => (
         <Page key={pageIdx} pageNumber={pageIdx + 2} totalPages={totalPagesCount}>
           <div className="flex justify-between items-center mb-10 pb-4 border-b border-slate-100">
@@ -132,7 +132,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
         </Page>
       ))}
 
-      {/* Final Summary & Terms Page */}
+      {/* Summary Page */}
       <Page pageNumber={totalPagesCount} totalPages={totalPagesCount}>
         <div className="flex justify-between items-center mb-10 pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2">
@@ -149,10 +149,6 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
               <span>Gross Subtotal</span>
               <span className="text-slate-900">{data.currency} {subtotal.toLocaleString()}</span>
             </div>
-            <div className="flex justify-between text-xs font-bold uppercase tracking-widest text-slate-400">
-              <span>Standard Tax (0%)</span>
-              <span className="text-slate-900">{data.currency} 0.00</span>
-            </div>
             <div className="pt-4 border-t border-slate-200">
               <div className="flex justify-between items-center">
                 <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">Total Investment Due</span>
@@ -167,9 +163,7 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
         <div className="mb-20">
           <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Mandatory Notes & Project Terms</h4>
           <div className="bg-slate-50 p-6 rounded-lg border border-slate-100">
-            <p className="text-[11px] text-slate-600 leading-relaxed whitespace-pre-wrap">
-              {data.notes}
-            </p>
+            <p className="text-[11px] text-slate-600 leading-relaxed whitespace-pre-wrap">{data.notes}</p>
           </div>
         </div>
 
@@ -181,8 +175,8 @@ const DocumentPreview: React.FC<DocumentPreviewProps> = ({ data }) => {
           </div>
           <div className="flex flex-col justify-end items-end">
              <div className="text-right">
-                <p className="text-[9px] text-slate-300 uppercase tracking-[0.4em] font-medium mb-1">Generated by Kurevi Finance Studio</p>
-                <p className="text-[8px] text-slate-200 uppercase tracking-[0.2em]">DOCUMENT ID: {data.id}-{new Date().getTime().toString(16)}</p>
+                <p className="text-[9px] text-slate-300 uppercase tracking-[0.4em] font-medium mb-1">Kurevi Finance Studio</p>
+                <p className="text-[8px] text-slate-200 uppercase tracking-[0.2em]">DOC ID: {data.id}</p>
              </div>
           </div>
         </div>

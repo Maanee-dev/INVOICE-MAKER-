@@ -2,22 +2,30 @@
 import { GoogleGenAI } from "@google/genai";
 
 /**
- * Safely retrieves the API Key from the environment.
+ * Safely retrieves the API Key.
+ * Checks multiple possible locations and handles missing globals gracefully.
  */
 const getApiKey = (): string => {
   try {
-    // Vite uses import.meta.env, but the SDK often looks for process.env
-    // We check both to be safe.
+    // 1. Check standard process.env (Node/Webpack)
     if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
       return process.env.API_KEY;
     }
+    
+    // 2. Check window.process.env (Polyfilled)
+    const win = window as any;
+    if (win.process?.env?.API_KEY) {
+      return win.process.env.API_KEY;
+    }
+
+    // 3. Check Vite import.meta (Build time)
     // @ts-ignore
-    if (import.meta.env && import.meta.env.VITE_API_KEY) {
+    if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_KEY) {
       // @ts-ignore
       return import.meta.env.VITE_API_KEY;
     }
   } catch (e) {
-    // Fail silently
+    // Fail silently to prevent app crash
   }
   return '';
 };
@@ -27,17 +35,14 @@ export const optimizeDescription = async (text: string, type: 'item' | 'notes'):
   
   const key = getApiKey();
   if (!key) {
-    console.warn("Kurevi: API Key missing. Skipping optimization.");
     return text;
   }
   
   try {
-    // Initialize inside the function to avoid top-level load errors
     const ai = new GoogleGenAI({ apiKey: key });
-    
     const prompt = type === 'item' 
-      ? `Rewrite this marketing service line item to sound more professional, high-end, and results-oriented for a boutique marketing agency called Kurevi. Keep it concise (max 15 words). Text: "${text}"`
-      : `Rewrite this "Thank You" note or terms summary for a marketing invoice/quotation. Make it sound elegant, professional, and appreciative of the partnership. Keep it under 40 words. Text: "${text}"`;
+      ? `Refine this marketing service description for Kurevi Studio (high-end). Max 20 words: "${text}"`
+      : `Refine these billing terms for Kurevi Studio. Professional and elegant. Max 30 words: "${text}"`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
@@ -46,7 +51,7 @@ export const optimizeDescription = async (text: string, type: 'item' | 'notes'):
 
     return response.text?.trim() || text;
   } catch (error) {
-    console.error("Gemini Optimization Error:", error);
+    console.warn("AI Optimization bypassed:", error);
     return text;
   }
 };
