@@ -7,14 +7,15 @@ import {
 } from './types.ts';
 import { 
   ICONS, 
-  DEFAULT_AGENCY 
+  DEFAULT_AGENCY,
+  Logo
 } from './constants.tsx';
 import DocumentPreview from './components/DocumentPreview.tsx';
 import { optimizeDescription } from './services/geminiService.ts';
 
 const App: React.FC = () => {
   const [docData, setDocData] = useState<DocumentData>({
-    id: 'QTN-2025-001',
+    id: 'QTN-2025-084',
     type: DocumentType.QUOTATION,
     date: new Date().toISOString().split('T')[0],
     dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
@@ -27,15 +28,87 @@ const App: React.FC = () => {
     agency: DEFAULT_AGENCY,
     items: [
       { 
-        id: '1', 
-        title: 'Brand Strategy & Identity', 
-        description: 'Comprehensive visual direction, logo suite, and brand guidelines for market positioning.', 
+        id: 'p1-1', 
+        title: 'Phase 1: Bespoke Brand Identity Architecture', 
+        description: 'A deep-dive creative exercise encompassing market positioning, competitor analysis, and visual language development. Deliverables include a master logo system (primary, secondary, and mark variants), custom color theory palettes designed for the premium hospitality sector, bespoke typography hierarchies, and a 40-page Brand Bible outlining rigorous digital and physical application standards.', 
         quantity: 1, 
-        rate: 15000, 
-        amount: 15000 
+        rate: 12500, 
+        amount: 12500 
+      },
+      { 
+        id: 'p1-2', 
+        title: 'Phase 1: Narrative Product Architecture & Tagging', 
+        description: 'Translating brand values into tangible product elements. Development of a unique die-cut physical tag system utilizing premium materials. Includes strategic narrative copywriting for product story and the integration of dynamic QR codes that trigger immersive digital storytelling experiences upon customer interaction.', 
+        quantity: 1, 
+        rate: 5500, 
+        amount: 5500 
+      },
+      { 
+        id: 'p1-3', 
+        title: 'Phase 1: Industrial Master-Layout Packaging', 
+        description: 'Advanced engineering of product packaging aesthetics across your entire SKU lineup. This involves structural layout design for pouches, glass, or boxes, ensuring print-ready precision, high-end finishing specifications (embossing/UV spot), and a unified luxury shelf presence that commands attention in boutique retail environments.', 
+        quantity: 1, 
+        rate: 3500, 
+        amount: 3500 
+      },
+      { 
+        id: 'p2-1', 
+        title: 'Phase 2: High-Performance Custom React B2B Flagship', 
+        description: 'Engineering of a bespoke, enterprise-grade web application built from the ground up using a modern React.js framework. Unlike standard templates, this custom architecture provides ultra-fast "edge-case" performance, SEO-friendly server-side rendering, and a proprietary procurement portal designed specifically to convert high-value resort purchasing managers into loyal partners.', 
+        quantity: 1, 
+        rate: 22000, 
+        amount: 22000 
+      },
+      { 
+        id: 'p2-2', 
+        title: 'Phase 2: Proprietary Digital Traceability System', 
+        description: 'Implementation of a specialized, secure digital ledger within your React application. This allows end-consumers and B2B buyers to verify "Ocean-to-Plate" batch data, certifications, and quality metrics in real-time, positioning your brand as the gold standard for transparency in the Maldives gourmet sector.', 
+        quantity: 1, 
+        rate: 6500, 
+        amount: 6500 
+      },
+      { 
+        id: 'p2-3', 
+        title: 'Phase 2: Strategic Copywriting & Authority SEO', 
+        description: 'Development of high-authority web copy that blends conversion-psychology with your brand story. Technical SEO implementation focuses on local and international keyword dominance for "Premium Maldives Exports" and "Resort Gourmet Supply," ensuring your platform becomes an organic lead-generation engine.', 
+        quantity: 1, 
+        rate: 4500, 
+        amount: 4500 
+      },
+      { 
+        id: 'p3-1', 
+        title: 'Phase 3: Omnichannel Social Ecosystem Management (Monthly)', 
+        description: 'Complete strategic management of Instagram, LinkedIn, and Facebook. Includes content calendar planning, daily community engagement to build brand loyalty, active reputation management for B2B queries, and data-driven monthly strategy pivots to maximize organic reach and brand authority.', 
+        quantity: 1, 
+        rate: 10000, 
+        amount: 10000 
+      },
+      { 
+        id: 'p3-2', 
+        title: 'Phase 3: Cinematic Content Production Suite (Monthly)', 
+        description: 'Bi-weekly high-fidelity visual production. Includes specialized macro food photography, cinemagraphs, and high-energy short-form video content (Reels/TikTok) produced with professional lighting and audio. This ensures a constant stream of premium assets that reflect your brand\'s high-end market position.', 
+        quantity: 1, 
+        rate: 10500, 
+        amount: 10500 
+      },
+      { 
+        id: 'p3-3', 
+        title: 'Phase 3: B2B Growth & Partnership Outreach (Monthly)', 
+        description: 'An active "Boots on the Ground" digital outreach strategy. We manage direct executive communication with Resort F&B Directors and Purchasing Managers via targeted LinkedIn campaigns and personalized email sequences, specifically designed to secure long-term bulk supply contracts for your product lines.', 
+        quantity: 1, 
+        rate: 5500, 
+        amount: 5500 
+      },
+      { 
+        id: 'p3-4', 
+        title: 'Phase 3: Performance Marketing & Data Intelligence (Monthly)', 
+        description: 'Precision management of Meta and Google ad spend. We utilize advanced pixel tracking, lookalike audience modeling, and multi-variant A/B testing to ensure every cent of your ad spend is optimized for lead generation. Monthly transparency reports provide deep insights into ROI and customer acquisition costs.', 
+        quantity: 1, 
+        rate: 4000, 
+        amount: 4000 
       },
     ],
-    notes: 'Validity: This quotation is valid for 30 days from the date of issue.',
+    notes: 'Project Milestones & Critical Financial Terms:\n\n1. PROJECT COMMENCEMENT (Phases 1 & 2): MVR 54,500.00 Total\n   - NON-NEGOTIABLE DEPOSIT: A non-refundable 50% deposit (MVR 27,250.00) of the combined Phase 1 and Phase 2 total is strictly required prior to the commencement of any creative design or custom code development. This secures your studio slot and covers initial research/resource allocation.\n   - FINAL SETTLEMENT: The remaining 50% balance is due upon successful final handover of all brand assets and the deployment of the custom React application to the production server.\n\n2. RECURRING GROWTH RETAINER (Phase 3 Total): MVR 30,000.00 / Month\n   - Monthly service fees are billed in full on the 1st of each calendar month. Payments must be settled within 5 business days to ensure uninterrupted content production and outreach activities.\n\nEXCLUSIVE PARTNERSHIP OFFER: By committing to a minimum 12-month Phase 3 Retainer agreement, Kurevi will apply a 20% loyalty deduction to your Phase 1 & 2 setup fees, effectively reducing your initial capital outlay.',
     taxRate: 0,
     discount: 0,
     currency: 'Rf'
@@ -116,13 +189,11 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-[#f9fafb]">
       {/* Sidebar - Controls */}
-      <div className="no-print w-full md:w-[450px] lg:w-[500px] bg-white border-r border-slate-200 overflow-y-auto h-screen p-8 custom-scrollbar">
+      <div className="no-print w-full md:w-[450px] lg:w-[550px] bg-white border-r border-slate-200 overflow-y-auto h-screen p-8 custom-scrollbar">
         <header className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-rose-600 rounded flex items-center justify-center shadow-lg shadow-rose-600/20">
-                <span className="text-white font-black text-sm">K</span>
-              </div>
+            <div className="flex items-center gap-3">
+              <Logo className="w-8 h-8 text-slate-900" />
               <h1 className="font-bold text-xl tracking-tight uppercase text-slate-900">Kurevi</h1>
             </div>
             <div className="flex gap-1 bg-slate-100 p-1 rounded-full">
@@ -140,10 +211,10 @@ const App: React.FC = () => {
               </button>
             </div>
           </div>
-          <div className="border-l-4 border-rose-600 pl-4 py-1">
+          <div className="border-l-4 border-slate-900 pl-4 py-1">
             <h2 className="text-xs font-bold text-slate-900 uppercase tracking-widest">Financial Studio</h2>
             <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">
-              Generate refined billing documents for KUREVII STUDIO projects.
+              Generate refined billing documents for KUREVII PVT LTD projects.
             </p>
           </div>
         </header>
@@ -188,7 +259,7 @@ const App: React.FC = () => {
               <textarea 
                 placeholder="Full Address, Phones"
                 value={docData.client.address}
-                rows={6}
+                rows={5}
                 onChange={(e) => setDocData(prev => ({ ...prev, client: { ...prev.client, address: e.target.value } }))}
                 className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm resize-none" 
               />
@@ -222,11 +293,11 @@ const App: React.FC = () => {
                     />
                     <div className="relative">
                       <textarea 
-                        rows={2}
+                        rows={5}
                         placeholder="Detailed service description..."
                         value={item.description}
                         onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                        className="w-full bg-white border border-slate-200 rounded-lg pl-3 pr-10 py-2 text-xs leading-relaxed resize-none" 
+                        className="w-full bg-white border border-slate-200 rounded-lg pl-3 pr-10 py-2 text-[11px] leading-relaxed resize-none" 
                       />
                       <button 
                         onClick={() => handleAiOptimize(item.id)}
@@ -267,6 +338,29 @@ const App: React.FC = () => {
                   </button>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Notes */}
+          <div className="space-y-4">
+            <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Notes & Terms</h3>
+            <div className="relative">
+              <textarea 
+                placeholder="Additional notes, payment terms, or summary..."
+                value={docData.notes}
+                rows={12}
+                onChange={(e) => setDocData(prev => ({ ...prev, notes: e.target.value }))}
+                className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-3 pr-10 py-2 text-xs leading-relaxed resize-none" 
+              />
+              <button 
+                onClick={() => handleAiOptimize('notes')}
+                disabled={isOptimizing === 'notes'}
+                className="absolute right-2 top-2 p-1 text-rose-500 hover:bg-rose-50 rounded-md transition-colors"
+              >
+                {isOptimizing === 'notes' ? (
+                  <div className="w-3 h-3 border-2 border-rose-500 border-t-transparent rounded-full animate-spin"></div>
+                ) : ICONS.AI}
+              </button>
             </div>
           </div>
         </section>
