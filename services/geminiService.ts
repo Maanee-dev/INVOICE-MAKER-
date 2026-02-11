@@ -1,10 +1,34 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+/**
+ * Safely retrieves the API Key from the environment.
+ * Modern browsers and bundlers like Vite do not polyfill 'process' by default.
+ */
+const getApiKey = (): string => {
+  try {
+    // Check if process exists before accessing its properties
+    if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+      return process.env.API_KEY;
+    }
+  } catch (e) {
+    // Silently handle environment access errors
+  }
+  return '';
+};
+
+// Initialize AI client; if key is missing, specific calls will fail gracefully
+// rather than crashing the entire application on load.
+const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
 export const optimizeDescription = async (text: string, type: 'item' | 'notes'): Promise<string> => {
   if (!text) return text;
+  
+  const key = getApiKey();
+  if (!key) {
+    console.warn("Kurevi Finance Studio: Gemini API Key not found in environment.");
+    return text;
+  }
   
   try {
     const prompt = type === 'item' 
