@@ -52,7 +52,37 @@
             background: #e11d48;
             border-radius: 10px;
         }
+        /* Crash Reporter Styles */
+        #crash-reporter {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            background: #fff1f2;
+            border: 2px solid #be123c;
+            color: #9f1239;
+            padding: 20px;
+            border-radius: 12px;
+            z-index: 9999;
+            font-family: monospace;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        }
     </style>
+    <script>
+      // POLYFILL for process.env - Crucial for Vite/Browser deployments
+      window.process = window.process || { env: {} };
+      
+      // Global Error Catcher for easier debugging on mobile/deployed sites
+      window.onerror = function(msg, url, lineNo, columnNo, error) {
+        var reporter = document.getElementById('crash-reporter');
+        if (reporter) {
+          reporter.style.display = 'block';
+          reporter.innerHTML = '<strong>Application Error:</strong><br>' + msg + '<br><small>at ' + url + ':' + lineNo + '</small>';
+        }
+        return false;
+      };
+    </script>
 <script type="importmap">
 {
   "imports": {
@@ -68,6 +98,7 @@
 </script>
 </head>
 <body>
+    <div id="crash-reporter"></div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
 </body>
